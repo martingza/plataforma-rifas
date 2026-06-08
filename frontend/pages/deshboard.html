@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - RifaApp</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="container nav-content">
+            <a href="/index.html" class="logo">
+                <i class="fas fa-ticket-alt"></i> RifaApp
+            </a>
+            <div class="nav-links">
+                <a href="/pages/dashboard.html">Dashboard</a>
+                <a href="/pages/crear-rifa.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Crear Rifa
+                </a>
+                <a href="#" onclick="logout()" class="btn btn-outline">Cerrar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Dashboard -->
+    <section class="section">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1><i class="fas fa-th-large"></i> Mis Rifas</h1>
+                <a href="/pages/crear-rifa.html" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> Nueva Rifa
+                </a>
+            </div>
+            
+            <div id="rifasContainer" class="rifas-grid">
+                <!-- Las rifas se cargan aquí -->
+                <div class="loading">
+                    <i class="fas fa-spinner fa-spin"></i> Cargando...
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="../js/app.js"></script>
+    <script>
+        // Verificar si está logueado
+        if (!isLoggedIn()) {
+            window.location.href = '/pages/login.html';
+        }
+
+        // Cargar rifas
+        async function loadRifas() {
+            const rifas = await getMisRifas();
+            const container = document.getElementById('rifasContainer');
+            
+            if (rifas.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <i class="fas fa-ticket-alt"></i>
+                        <h3>No tienes rifas aún</h3>
+                        <p>Crea tu primera rifa para empezar</p>
+                        <a href="/pages/crear-rifa.html" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Crear Rifa
+                        </a>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = rifas.map(rifa => `
+                <div class="rifa-card">
+                    <div class="rifa-image">
+                        ${rifa.imagen ? `<img src="${rifa.imagen}" alt="${rifa.titulo}">` : 
+                        `<div class="rifa-image-placeholder"><i class="fas fa-gift"></i></div>`}
+                    </div>
+                    <div class="rifa-info">
+                        <h3>${rifa.titulo}</h3>
+                        <p class="rifa-premio"><i class="fas fa-trophy"></i> ${rifa.premio}</p>
+                        <p class="rifa-precio"><i class="fas fa-tag"></i> $${rifa.precioNumero} por número</p>
+                        <p class="rifa-fecha"><i class="fas fa-calendar"></i> Sorteo: ${formatDate(rifa.fechaSorteo)}</p>
+                        <div class="rifa-stats">
+                            <span class="stat-badge disponible">
+                                ${rifa.estadisticas.numerosVendidos || 0} vendidos
+                            </span>
+                            <span class="stat-badge reservado">
+                                ${rifa.estadisticas.numerosReservados || 0} reservados
+                            </span>
+                        </div>
+                    </div>
+                    <div class="rifa-actions">
+                        <a href="/pages/rifa.html?slug=${rifa.slug}" class="btn btn-primary btn-sm">
+                            <i class="fas fa-eye"></i> Ver
+                        </a>
+                        <button onclick="handleDelete('${rifa._id}')" class="btn btn-danger btn-sm">
+                            <i class="fas fa-trash"></i> Eliminar
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        async function handleDelete(id) {
+            if (confirm('¿Estás seguro de eliminar esta rifa?')) {
+                const success = await eliminarRifa(id);
+                if (success) {
+                    showAlert('Rifa eliminada');
+                    loadRifas();
+                } else {
+                    showAlert('Error al eliminar', 'error');
+                }
+            }
+        }
+
+        loadRifas();
+    </script>
+</body>
+</html>
