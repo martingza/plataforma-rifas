@@ -45,13 +45,13 @@
                         <input type="text" id="premio" name="premio" required placeholder="Ej: iPhone 15 Pro 256GB">
                     </div>
                     
-                    <div class="form-row">
-                        <div class="form-group">
+                    <div class="form-row" style="display: flex; gap: 15px;">
+                        <div class="form-group" style="flex: 1;">
                             <label for="precioNumero">Precio por Número *</label>
                             <input type="number" id="precioNumero" name="precioNumero" required placeholder="Ej: 5000" min="1">
                         </div>
                         
-                        <div class="form-group">
+                        <div class="form-group" style="flex: 1;">
                             <label for="cantidadNumeros">Cantidad de Números *</label>
                             <select id="cantidadNumeros" name="cantidadNumeros" required>
                                 <option value="50">50 números</option>
@@ -92,8 +92,9 @@
             window.location.href = '/pages/login.html';
         }
 
-        // Set minimum date to today
-        document.getElementById('fechaSorteo').min = new Date().toISOString().split('T')[0];
+        // Fecha mínima: hoy
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('fechaSorteo').min = today;
 
         async function handleCrearRifa(e) {
             e.preventDefault();
@@ -113,6 +114,8 @@
                     colorSecundario: '#7C3AED'
                 }
             };
+            
+            console.log('🎯 Creando rifa:', rifaData);
             
             const rifa = await crearRifa(rifaData);
             
