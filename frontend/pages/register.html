@@ -60,4 +60,33 @@
                 </form>
                 
                 <div class="auth-footer">
-                    <p>¿Ya tienes cuenta? <a href="/pages/login.html">Inicia sesión aquí</
+                    <p>¿Ya tienes cuenta? <a href="/pages/login.html">Inicia sesión aquí</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ⚠️ ESTO ES LO QUE FALTABA -->
+    <script src="../js/app.js"></script>
+    <script>
+        function handleRegister(e) {
+            e.preventDefault();
+            
+            const nombre = document.getElementById('nombre').value;
+            const email = document.getElementById('email').value;
+            const telefono = document.getElementById('telefono').value;
+            const password = document.getElementById('password').value;
+            const password2 = document.getElementById('password2').value;
+            
+            console.log('📝 Registrando:', { nombre, email });
+            
+            if (password !== password2) {
+                showAlert('Las contraseñas no coinciden', 'error');
+                return;
+            }
+            
+            register(nombre, email, password, telefono);
+        }
+    </script>
+</body>
+</html>
