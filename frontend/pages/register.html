@@ -13,4 +13,51 @@
     <nav class="navbar">
         <div class="container nav-content">
             <a href="/index.html" class="logo">
-                <i class="fas fa-ticket-alt"></i>
+                <i class="fas fa-ticket-alt"></i> RifaApp
+            </a>
+            <div class="nav-links">
+                <a href="/pages/login.html" class="btn btn-outline">Iniciar Sesión</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Register Form -->
+    <section class="auth-section">
+        <div class="container">
+            <div class="auth-card">
+                <h2><i class="fas fa-user-plus"></i> Registrarse</h2>
+                <p>Crea tu cuenta gratuita</p>
+                
+                <form id="registerForm" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="nombre">Nombre</label>
+                        <input type="text" id="nombre" name="nombre" required placeholder="Tu nombre completo">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required placeholder="tu@email.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="telefono">Teléfono (opcional)</label>
+                        <input type="tel" id="telefono" name="telefono" placeholder="+56 9 1234 5678">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" name="password" required placeholder="Mínimo 6 caracteres" minlength="6">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password2">Confirmar Contraseña</label>
+                        <input type="password" id="password2" name="password2" required placeholder="Repite tu contraseña" minlength="6">
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-full">
+                        <i class="fas fa-user-plus"></i> Crear Cuenta
+                    </button>
+                </form>
+                
+                <div class="auth-footer">
+                    <p>¿Ya tienes cuenta? <a href="/pages/login.html">Inicia sesión aquí</
