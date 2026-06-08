@@ -36,7 +36,6 @@
             </div>
             
             <div id="rifasContainer" class="rifas-grid">
-                <!-- Las rifas se cargan aquí -->
                 <div class="loading">
                     <i class="fas fa-spinner fa-spin"></i> Cargando...
                 </div>
@@ -56,10 +55,10 @@
             const rifas = await getMisRifas();
             const container = document.getElementById('rifasContainer');
             
-            if (rifas.length === 0) {
+            if (!rifas || rifas.length === 0) {
                 container.innerHTML = `
                     <div class="empty-state">
-                        <i class="fas fa-ticket-alt"></i>
+                        <i class="fas fa-ticket-alt" style="font-size: 48px; color: #ccc;"></i>
                         <h3>No tienes rifas aún</h3>
                         <p>Crea tu primera rifa para empezar</p>
                         <a href="/pages/crear-rifa.html" class="btn btn-primary">
@@ -72,23 +71,12 @@
             
             container.innerHTML = rifas.map(rifa => `
                 <div class="rifa-card">
-                    <div class="rifa-image">
-                        ${rifa.imagen ? `<img src="${rifa.imagen}" alt="${rifa.titulo}">` : 
-                        `<div class="rifa-image-placeholder"><i class="fas fa-gift"></i></div>`}
-                    </div>
                     <div class="rifa-info">
                         <h3>${rifa.titulo}</h3>
-                        <p class="rifa-premio"><i class="fas fa-trophy"></i> ${rifa.premio}</p>
-                        <p class="rifa-precio"><i class="fas fa-tag"></i> $${rifa.precioNumero} por número</p>
-                        <p class="rifa-fecha"><i class="fas fa-calendar"></i> Sorteo: ${formatDate(rifa.fechaSorteo)}</p>
-                        <div class="rifa-stats">
-                            <span class="stat-badge disponible">
-                                ${rifa.estadisticas.numerosVendidos || 0} vendidos
-                            </span>
-                            <span class="stat-badge reservado">
-                                ${rifa.estadisticas.numerosReservados || 0} reservados
-                            </span>
-                        </div>
+                        <p><i class="fas fa-trophy"></i> Premio: ${rifa.premio}</p>
+                        <p><i class="fas fa-tag"></i> Precio: $${rifa.precioNumero} por número</p>
+                        <p><i class="fas fa-calendar"></i> Sorteo: ${new Date(rifa.fechaSorteo).toLocaleDateString('es-ES')}</p>
+                        <p><i class="fas fa-check-circle"></i> Vendidos: ${rifa.estadisticas.numerosVendidos || 0}</p>
                     </div>
                     <div class="rifa-actions">
                         <a href="/pages/rifa.html?slug=${rifa.slug}" class="btn btn-primary btn-sm">
