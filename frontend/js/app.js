@@ -1,7 +1,7 @@
 // ============================================
 // CONFIGURACIÓN
 // ============================================
-const API_URL = 'https://rifas-c6hq.onrender.com/api';
+const API_URL = 'https://mi-rifa-backend.onrender.com/api';
 
 // ============================================
 // UTILIDADES
