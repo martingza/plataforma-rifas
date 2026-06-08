@@ -23,18 +23,10 @@ const userSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
-    avatar: {
-        type: String,
-        default: ''
-    },
     rol: {
         type: String,
         enum: ['usuario', 'admin'],
         default: 'usuario'
-    },
-    activo: {
-        type: Boolean,
-        default: true
     }
 }, {
     timestamps: true
@@ -43,9 +35,13 @@ const userSchema = new mongoose.Schema({
 // Hash password antes de guardar
 userSchema.pre('save', async function(next) {
     if (!this.isModified('password')) return next();
-    const salt = await bcrypt.genSalt(10);
-    this.password = await bcrypt.hash(this.password, salt);
-    next();
+    try {
+        const salt = await bcrypt.genSalt(10);
+        this.password = await bcrypt.hash(this.password, salt);
+        next();
+    } catch (error) {
+        next(error);
+    }
 });
 
 // Comparar password
